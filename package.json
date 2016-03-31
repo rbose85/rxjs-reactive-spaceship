@@ -1,0 +1,15 @@
+{
+  "name": "rxjs-reactive-spaceship",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Rajiv Bose <rbose85@users.noreply.github.com>",
+  "license": "ISC",
+  "dependencies": {
+    "rx": "^4.1.0"
+  }
+}
