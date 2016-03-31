@@ -6,6 +6,16 @@ document.body.appendChild(canvas);
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+
+const paintStars = stars => {
+  ctx.fillStyle = '#000000';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#ffffff';
+
+  stars.forEach(star => ctx.fillRect(star.x, star.y, star.size, star.size));
+};
+
+
 const SPEED = 40;
 const STAR_NUMBER = 250;
 
