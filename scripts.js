@@ -39,4 +39,5 @@ var StarStream = Rx.Observable.range(1, STAR_NUMBER)
 
           return stars;
         })
-    );
+    )
+    .subscribe(stars => paintStars(stars));
