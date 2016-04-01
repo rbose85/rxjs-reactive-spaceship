@@ -38,7 +38,7 @@ const getStar = () => ({
   isFast: Math.floor(Math.random() * 4 + 1) % 4 === 0
 });
 
-Rx.Observable.range(1, STAR_NUMBER)
+const Stars = Rx.Observable.range(1, STAR_NUMBER)
     .map(() => getStar())
     .toArray()
     .flatMap(stars => Rx.Observable.interval(SPEED)
@@ -53,12 +53,23 @@ Rx.Observable.range(1, STAR_NUMBER)
 
           return stars;
         })
-    )
-    .subscribe(stars => paintStars(stars));
+    );
 
 
 const HERO_Y = canvas.height - 30;
 
-Rx.Observable.fromEvent(canvas, 'mousemove')
+const Spaceship = Rx.Observable.fromEvent(canvas, 'mousemove')
     .map(e => ({ x: e.clientX, y: HERO_Y }))
     .startWith({ x: canvas.width / 2, y: HERO_Y });
+
+
+const render = actors => {
+  paintStars(actors.stars);
+  paintSpaceship(actors.spaceship.x, actors.spaceship.y);
+};
+
+Rx.Observable.combineLatest(Stars, Spaceship, (stars, spaceship) => ({
+      stars,
+      spaceship
+    }))
+    .subscribe(render);
