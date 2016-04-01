@@ -15,6 +15,18 @@ const paintStars = stars => {
   stars.forEach(star => ctx.fillRect(star.x, star.y, star.size, star.size));
 };
 
+const drawTriangle = (x, y, width, colour, direction) => {
+  ctx.fillStyle = colour;
+  ctx.beginPath();
+  ctx.moveTo(x - width, y);
+  ctx.lineTo(x, direction === 'up' ? y - width : y + width);
+  ctx.lineTo(x + width, y);
+  ctx.lineTo(x - width, y);
+  ctx.fill();
+};
+
+const paintSpaceship = (x, y) => drawTriangle(x, y, 20, '#ff0000', 'up');
+
 
 const SPEED = 40;
 const STAR_NUMBER = 250;
