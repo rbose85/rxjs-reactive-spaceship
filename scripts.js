@@ -22,7 +22,8 @@ const STAR_NUMBER = 250;
 const getStar = () => ({
   x: parseInt(Math.random() * canvas.width),
   y: parseInt(Math.random() * canvas.height),
-  size: Math.random() * 3 + 1
+  size: Math.random() * 3 + 1,
+  isFast: Math.floor(Math.random() * 4 + 1) % 4 === 0
 });
 
 Rx.Observable.range(1, STAR_NUMBER)
@@ -35,7 +36,7 @@ Rx.Observable.range(1, STAR_NUMBER)
               Object.assign(star, getStar(), { y: 0 });
             }
 
-            star.y += 3;  // move star
+            star.y += star.isFast ? 3 : 2; // star 'velocity'
           });
 
           return stars;
