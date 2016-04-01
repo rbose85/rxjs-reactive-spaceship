@@ -55,3 +55,10 @@ Rx.Observable.range(1, STAR_NUMBER)
         })
     )
     .subscribe(stars => paintStars(stars));
+
+
+const HERO_Y = canvas.height - 30;
+
+Rx.Observable.fromEvent(canvas, 'mousemove')
+    .map(e => ({ x: e.clientX, y: HERO_Y }))
+    .startWith({ x: canvas.width / 2, y: HERO_Y });
