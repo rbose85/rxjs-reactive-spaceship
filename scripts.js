@@ -27,6 +27,10 @@ const drawTriangle = (x, y, width, colour, direction) => {
 
 const paintSpaceship = (x, y) => drawTriangle(x, y, 20, '#ff0000', 'up');
 
+const getRandom = (min, max) => Math.random() * (max - min + 1) + min;
+
+const getRandomInt = (min, max) => Math.floor(getRandom(min, max));
+
 
 const SPEED = 40;
 const STAR_NUMBER = 250;
