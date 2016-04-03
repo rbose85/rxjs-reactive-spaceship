@@ -38,8 +38,8 @@ const STAR_NUMBER = 250;
 const getStar = () => ({
   x: parseInt(Math.random() * canvas.width),
   y: parseInt(Math.random() * canvas.height),
-  size: Math.random() * 3 + 1,
-  isFast: Math.floor(Math.random() * 4 + 1) % 4 === 0
+  size: getRandom(1, 3),
+  isFast: getRandomInt(1, 4) % 4 === 0
 });
 
 const Stars = Rx.Observable.range(1, STAR_NUMBER)
