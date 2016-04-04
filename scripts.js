@@ -72,7 +72,8 @@ const render = actors => {
   paintSpaceship(actors.spaceship.x, actors.spaceship.y);
 };
 
-Rx.Observable.combineLatest(Stars, Spaceship, (stars, spaceship) => ({
+Rx.Observable.combineLatest(Stars, Spaceship,
+    (stars, spaceship, enemies) => ({
       stars,
       spaceship
     }))
