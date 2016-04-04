@@ -76,7 +76,7 @@ const Spaceship = Rx.Observable.fromEvent(canvas, 'mousemove')
 
 const ENEMY_FREQ = 1500;
 
-Rx.Observable.interval(ENEMY_FREQ)
+const Enemies = Rx.Observable.interval(ENEMY_FREQ)
     .scan(enemies => {
       enemies.push({
         x: parseInt(Math.random() * canvas.width),
@@ -90,11 +90,13 @@ Rx.Observable.interval(ENEMY_FREQ)
 const render = actors => {
   paintStars(actors.stars);
   paintSpaceship(actors.spaceship.x, actors.spaceship.y);
+  paintEnemies(actors.enemies);
 };
 
-Rx.Observable.combineLatest(Stars, Spaceship,
+Rx.Observable.combineLatest(Stars, Spaceship, Enemies,
     (stars, spaceship, enemies) => ({
       stars,
-      spaceship
+      spaceship,
+      enemies
     }))
     .subscribe(render);
