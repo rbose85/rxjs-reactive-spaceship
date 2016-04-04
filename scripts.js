@@ -31,6 +31,13 @@ const getRandom = (min, max) => Math.random() * (max - min + 1) + min;
 
 const getRandomInt = (min, max) => Math.floor(getRandom(min, max));
 
+const paintEnemies = enemies => enemies.forEach((enemy) => {
+  enemy.y += 5;
+  enemy.x += getRandomInt(-15, 15);
+
+  drawTriangle(enemy.x, enemy.y, 20, '#00ff00', 'down');
+});
+
 
 const SPEED = 40;
 const STAR_NUMBER = 250;
@@ -65,6 +72,19 @@ const HERO_Y = canvas.height - 30;
 const Spaceship = Rx.Observable.fromEvent(canvas, 'mousemove')
     .map(e => ({ x: e.clientX, y: HERO_Y }))
     .startWith({ x: canvas.width / 2, y: HERO_Y });
+
+
+const ENEMY_FREQ = 1500;
+
+Rx.Observable.interval(ENEMY_FREQ)
+    .scan(enemies => {
+      enemies.push({
+        x: parseInt(Math.random() * canvas.width),
+        y: -30
+      });
+
+      return enemies;
+    }, []);
 
 
 const render = actors => {
