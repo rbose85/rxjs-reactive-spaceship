@@ -99,4 +99,5 @@ Rx.Observable.combineLatest(Stars, Spaceship, Enemies,
       spaceship,
       enemies
     }))
+    .sample(SPEED)
     .subscribe(render);
