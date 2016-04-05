@@ -38,6 +38,15 @@ const paintEnemies = enemies => enemies.forEach((enemy) => {
   drawTriangle(enemy.x, enemy.y, 20, '#00ff00', 'down');
 });
 
+const SHOOTING_SPEED = 15;
+const paintHeroShots = shots => shots
+    .filter(shot => shot)
+    .forEach(shot => {
+      shot.y -= SHOOTING_SPEED;
+
+      drawTriangle(shot.x, shot.y, 5, '#ffff00', 'up');
+    });
+
 
 const SPEED = 40;
 const STAR_NUMBER = 250;
