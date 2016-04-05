@@ -119,13 +119,14 @@ const render = actors => {
   paintStars(actors.stars);
   paintSpaceship(actors.spaceship.x, actors.spaceship.y);
   paintEnemies(actors.enemies);
+  paintHeroShots(actors.heroShots);
 };
 
-Rx.Observable.combineLatest(Stars, Spaceship, Enemies,
-    (stars, spaceship, enemies) => ({
+Rx.Observable.combineLatest(Stars, Spaceship, Enemies, HeroShots, (stars, spaceship, enemies, heroShots) => ({
       stars,
       spaceship,
-      enemies
+      enemies,
+      heroShots
     }))
     .sample(SPEED)
     .subscribe(render);
