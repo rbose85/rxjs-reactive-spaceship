@@ -86,6 +86,25 @@ const Enemies = Rx.Observable.interval(ENEMY_FREQ)
       return enemies;
     }, []);
 
+const FiringShots = Rx.Observable.merge(
+    Rx.Observable.fromEvent(canvas, 'click'),
+    Rx.Observable.fromEvent(document, 'keydown')
+        .filter(e => e.keyCode === 32)
+    )
+    .sample(200)
+    .timestamp()
+    .startWith({ timestamp: null });
+
+const HeroShots = Rx.Observable.combineLatest(FiringShots, Spaceship, (heroShots, spaceship) => ({
+      timestamp: heroShots.timestamp,
+      x: spaceship.x
+    }))
+    .distinctUntilChanged(shot => shot.timestamp)
+    .scan((shotArray, shot) => {
+      shotArray.push(shot.timestamp ? { x: shot.x, y: HERO_Y } : undefined);
+      return shotArray;
+    }, []);
+
 
 const render = actors => {
   paintStars(actors.stars);
