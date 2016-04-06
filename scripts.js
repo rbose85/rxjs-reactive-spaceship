@@ -11,6 +11,8 @@ const getRandom = (min, max) => Math.random() * (max - min + 1) + min;
 
 const getRandomInt = (min, max) => Math.floor(getRandom(min, max));
 
+const isVisible = obj => obj.x > -40 && obj.x < canvas.width + 40 && obj.y > -40 && obj.y < canvas.height + 40;
+
 const paintStars = stars => {
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -84,15 +86,24 @@ const Spaceship = Rx.Observable.fromEvent(canvas, 'mousemove')
 
 
 const ENEMY_FREQ = 1500;
-
+const ENEMY_SHOOTING_FREQ = 750;
 const Enemies = Rx.Observable.interval(ENEMY_FREQ)
     .scan(enemies => {
-      enemies.push({
+      const enemy = {
         x: parseInt(Math.random() * canvas.width),
-        y: -30
-      });
+        y: -30,
+        shots: []
+      };
 
-      return enemies;
+      Rx.Observable.interval(ENEMY_SHOOTING_FREQ)
+          .subscribe(() => {
+            enemy.shots.push({ x: enemy.x, y: enemy.y });
+            enemy.shots = enemy.shots.filter(isVisible);
+          });
+
+      enemies.push(enemy);
+
+      return enemies.filter(isVisible);
     }, []);
 
 const FiringShots = Rx.Observable.merge(
