@@ -38,6 +38,8 @@ const drawTriangle = (x, y, width, colour, direction) => {
 
 const paintSpaceship = (x, y) => drawTriangle(x, y, 20, '#ff0000', 'up');
 
+const SHOOTING_SPEED = 15;
+
 const paintEnemies = enemies => enemies.forEach(enemy => {
   enemy.y += 5;
   enemy.x += getRandomInt(-15, 15);
@@ -52,7 +54,6 @@ const paintEnemies = enemies => enemies.forEach(enemy => {
   });
 });
 
-const SHOOTING_SPEED = 15;
 const paintHeroShots = (shots, enemies) => shots.filter(shot => shot)
     .forEach(shot => {
       enemies.forEach(enemy => {
