@@ -15,6 +15,9 @@ const isVisible = obj => obj.x > -40 && obj.x < canvas.width + 40 && obj.y > -40
 
 const collision = (a, b) => (a.x > b.x - 20 && a.x < b.x + 20) && (a.y > b.y - 20 && a.y < b.y + 20);
 
+const gameOver = (ship, enemies) => enemies.some(enemy => collision(ship, enemy) ? true : enemy.shots.some(shot => collision(ship, shot)));
+
+
 const paintStars = stars => {
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -158,4 +161,5 @@ Rx.Observable.combineLatest(Stars, Spaceship, Enemies, HeroShots, (stars, spaces
       heroShots
     }))
     .sample(SPEED)
+    .takeWhile(actors => gameOver(actors.spaceship, actors.enemies) === false)
     .subscribe(render);
