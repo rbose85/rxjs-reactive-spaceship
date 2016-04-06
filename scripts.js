@@ -13,6 +13,8 @@ const getRandomInt = (min, max) => Math.floor(getRandom(min, max));
 
 const isVisible = obj => obj.x > -40 && obj.x < canvas.width + 40 && obj.y > -40 && obj.y < canvas.height + 40;
 
+const collision = (a, b) => (a.x > b.x - 20 && a.x < b.x + 20) && (a.y > b.y - 20 && a.y < b.y + 20);
+
 const paintStars = stars => {
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -37,7 +39,9 @@ const paintEnemies = enemies => enemies.forEach(enemy => {
   enemy.y += 5;
   enemy.x += getRandomInt(-15, 15);
 
-  drawTriangle(enemy.x, enemy.y, 20, '#00ff00', 'down');
+  if (!enemy.isDead) {
+    drawTriangle(enemy.x, enemy.y, 20, '#00ff00', 'down');
+  }
 
   enemy.shots.forEach(shot => {
     shot.y += SHOOTING_SPEED;
@@ -46,9 +50,15 @@ const paintEnemies = enemies => enemies.forEach(enemy => {
 });
 
 const SHOOTING_SPEED = 15;
-const paintHeroShots = shots => shots
-    .filter(shot => shot)
+const paintHeroShots = (shots, enemies) => shots.filter(shot => shot)
     .forEach(shot => {
+      enemies.forEach(enemy => {
+        if (!enemy.isDead && collision(shot, enemy)) {
+          enemy.isDead = true;
+          shot.x = shot.y = -100;
+        }
+      });
+
       shot.y -= SHOOTING_SPEED;
 
       drawTriangle(shot.x, shot.y, 5, '#ffff00', 'up');
@@ -102,13 +112,16 @@ const Enemies = Rx.Observable.interval(ENEMY_FREQ)
 
       Rx.Observable.interval(ENEMY_SHOOTING_FREQ)
           .subscribe(() => {
-            enemy.shots.push({ x: enemy.x, y: enemy.y });
+            if (!enemy.isDead) {
+              enemy.shots.push({ x: enemy.x, y: enemy.y });
+            }
             enemy.shots = enemy.shots.filter(isVisible);
           });
 
       enemies.push(enemy);
 
-      return enemies.filter(isVisible);
+      return enemies.filter(isVisible)
+          .filter(enemy => !(enemy.isDead && enemy.shots.length === 0));
     }, []);
 
 const FiringShots = Rx.Observable.merge(
@@ -135,7 +148,7 @@ const render = actors => {
   paintStars(actors.stars);
   paintSpaceship(actors.spaceship.x, actors.spaceship.y);
   paintEnemies(actors.enemies);
-  paintHeroShots(actors.heroShots);
+  paintHeroShots(actors.heroShots, actors.enemies);
 };
 
 Rx.Observable.combineLatest(Stars, Spaceship, Enemies, HeroShots, (stars, spaceship, enemies, heroShots) => ({
