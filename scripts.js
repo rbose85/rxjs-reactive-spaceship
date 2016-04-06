@@ -80,7 +80,7 @@ const getStar = () => ({
 });
 
 const Stars = Rx.Observable.range(1, STAR_NUMBER)
-    .map(() => getStar())
+    .map(getStar)
     .toArray()
     .flatMap(stars => Rx.Observable.interval(SPEED)
         .map(() => {
