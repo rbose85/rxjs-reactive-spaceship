@@ -7,6 +7,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 
+const getRandom = (min, max) => Math.random() * (max - min + 1) + min;
+
+const getRandomInt = (min, max) => Math.floor(getRandom(min, max));
+
 const paintStars = stars => {
   ctx.fillStyle = '#000000';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -26,10 +30,6 @@ const drawTriangle = (x, y, width, colour, direction) => {
 };
 
 const paintSpaceship = (x, y) => drawTriangle(x, y, 20, '#ff0000', 'up');
-
-const getRandom = (min, max) => Math.random() * (max - min + 1) + min;
-
-const getRandomInt = (min, max) => Math.floor(getRandom(min, max));
 
 const paintEnemies = enemies => enemies.forEach((enemy) => {
   enemy.y += 5;
