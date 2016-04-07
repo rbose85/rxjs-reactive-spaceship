@@ -71,6 +71,12 @@ const paintHeroShots = (shots, enemies) => shots.filter(shot => shot)
       drawTriangle(shot.x, shot.y, 5, '#ffff00', 'up');
     });
 
+const paintScore = score => {
+  ctx.fillStyle = '#ffffff';
+  ctx.font = 'bold 26px sans-serif';
+  ctx.fillText('Score: ' + score, 40, 43);
+};
+
 
 const SPEED = 40;
 const STAR_NUMBER = 250;
