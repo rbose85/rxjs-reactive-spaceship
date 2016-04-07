@@ -166,13 +166,16 @@ const render = actors => {
   paintSpaceship(actors.spaceship.x, actors.spaceship.y);
   paintEnemies(actors.enemies);
   paintHeroShots(actors.heroShots, actors.enemies);
+  paintScore(actors.score);
 };
 
-Rx.Observable.combineLatest(Stars, Spaceship, Enemies, HeroShots, (stars, spaceship, enemies, heroShots) => ({
+Rx.Observable.combineLatest(Stars, Spaceship, Enemies, HeroShots, Score,
+    (stars, spaceship, enemies, heroShots, score) => ({
       stars,
       spaceship,
       enemies,
-      heroShots
+      heroShots,
+      score
     }))
     .sample(SPEED)
     .takeWhile(actors => gameOver(actors.spaceship, actors.enemies) === false)
