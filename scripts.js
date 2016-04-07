@@ -148,6 +148,10 @@ const HeroShots = Rx.Observable.combineLatest(FiringShots, Spaceship, (heroShots
     }, []);
 
 
+const ScoreSubject = new Rx.Subject();
+const Score = ScoreSubject.scan((last, next) => last + next, 0)
+    .startWith(0);
+
 const render = actors => {
   paintStars(actors.stars);
   paintSpaceship(actors.spaceship.x, actors.spaceship.y);
