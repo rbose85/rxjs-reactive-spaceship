@@ -54,10 +54,13 @@ const paintEnemies = enemies => enemies.forEach(enemy => {
   });
 });
 
+const SCORE_INCREASE = 10;
+
 const paintHeroShots = (shots, enemies) => shots.filter(shot => shot)
     .forEach(shot => {
       enemies.forEach(enemy => {
         if (!enemy.isDead && collision(shot, enemy)) {
+          ScoreSubject.onNext(SCORE_INCREASE);
           enemy.isDead = true;
           shot.x = shot.y = -100;
         }
